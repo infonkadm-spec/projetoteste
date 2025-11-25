@@ -45,7 +45,7 @@ export default async function Layout({
     <html lang="es">
       {isProduction && (
         <head>
-          <HeaderScript content={content} />
+          <HeaderScript />
         </head>
       )}
       <body className={bodyClassName} suppressHydrationWarning>

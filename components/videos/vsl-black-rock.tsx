@@ -22,7 +22,7 @@ export default function VSLBlackRock() {
       const existingScript = document.querySelector('script[src*="6925dfb27ac26831094ad1ba"]');
       if (existingScript) {
         existingScript.remove();
-      };
+      }
     };
   }, []);
 

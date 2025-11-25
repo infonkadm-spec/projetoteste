@@ -1,6 +1,6 @@
 import Script from "next/script";
 
-export default function HeaderScript({ content }: { content: string }) {
+export default function HeaderScript() {
 
   return (
     <>

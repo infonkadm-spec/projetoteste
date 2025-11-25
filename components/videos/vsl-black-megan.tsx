@@ -22,7 +22,7 @@ export default function VSLBlackMegan() {
       const existingScript = document.querySelector('script[src*="6925e0122126a6cf9409a026"]');
       if (existingScript) {
         existingScript.remove();
-      };
+      }
     };
   }, []);
 
