@@ -4,7 +4,7 @@ export default function VSLBlackMegan() {
   useEffect(() => {
     const loadPlayerScript = () => {
       if (document.querySelector('script[src*="6925e0122126a6cf9409a026"]')) return;
-      var s = document.createElement("script");
+      const s = document.createElement("script");
       s.src = "https://scripts.converteai.net/7811ed69-550c-4b89-9a28-8ab5dbe8db56/players/6925e0122126a6cf9409a026/v4/player.js";
       s.async = true;
       document.head.appendChild(s);
