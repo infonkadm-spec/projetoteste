@@ -30,6 +30,7 @@ export default function Page({
   const videoId = "6925dff292567ba9d54e15c4";
   const backLink = `https://${userHost}/promo`;
   const pitchTime = 630;
+  const ctaLink = `${userFrontLink}${userFrontLink.includes("?") ? "&" : "?"}src=kim`;
 
   // VIDEO VERIFY
   useEffect(() => {
@@ -90,7 +91,7 @@ export default function Page({
       <div className="flex flex-col items-center gap-8 relative -mt-4">
         <VSL />
         {visible && (
-          <a href={userFrontLink}>
+          <a href={ctaLink}>
             <Button
               onClick={handleClick}
               disabled={active}
