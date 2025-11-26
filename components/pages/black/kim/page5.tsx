@@ -32,16 +32,29 @@ export default function Page({
 
   // VIDEO VERIFY
   useEffect(() => {
-    if (!visible) {
-      const intervalId = setInterval(() => {
-        const storedVideoTime = Number(localStorage.getItem(videoId + '-resume'));
-        if (storedVideoTime > pitchTime) {
-          setVisible(true);
-        };
-      }, 1000);
-      return () => clearInterval(intervalId);
+    if (visible) return;
+
+    // Tenta liberar pelo tempo salvo do player
+    const intervalId = setInterval(() => {
+      const storedResumeTime = Number(localStorage.getItem(videoId + '-resume') || 0);
+      const storedPlainTime = Number(localStorage.getItem(videoId) || 0);
+      const storedVideoTime = Math.max(storedResumeTime, storedPlainTime);
+
+      if (storedVideoTime > pitchTime) {
+        setVisible(true);
+      }
+    }, 1000);
+
+    // Fallback: garante que o botão apareça mesmo se o player não salvar nada
+    const timeoutId = setTimeout(() => {
+      setVisible(true);
+    }, (pitchTime + 5) * 1000);
+
+    return () => {
+      clearInterval(intervalId);
+      clearTimeout(timeoutId);
     };
-  }, [videoId, visible]);
+  }, [videoId, pitchTime, visible]);
 
   // BACK REDIRECT
   useEffect(() => {

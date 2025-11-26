@@ -9,19 +9,31 @@ export default function Page7() {
 
   const [visible, setVisible] = useState<boolean>(false);
   const videoId = "6708631ec0f437000cf541d0";
+  const pitchTime = 850;
 
   // VIDEO VERIFY
   useEffect(() => {
-    if (!visible) {
-      const intervalId = setInterval(() => {
-        const storedVideoTime = Number(localStorage.getItem(videoId));
-        if (storedVideoTime > 850) {
-          setVisible(true)
-        }
-      }, 1000);
-      return () => clearInterval(intervalId);
-    }
-  }, [videoId, visible]);
+    if (visible) return;
+
+    const intervalId = setInterval(() => {
+      const storedResumeTime = Number(localStorage.getItem(videoId + '-resume') || 0);
+      const storedPlainTime = Number(localStorage.getItem(videoId) || 0);
+      const storedVideoTime = Math.max(storedResumeTime, storedPlainTime);
+
+      if (storedVideoTime > pitchTime) {
+        setVisible(true);
+      }
+    }, 1000);
+
+    const timeoutId = setTimeout(() => {
+      setVisible(true);
+    }, (pitchTime + 5) * 1000);
+
+    return () => {
+      clearInterval(intervalId);
+      clearTimeout(timeoutId);
+    };
+  }, [videoId, pitchTime, visible]);
 
   return (
     <>
