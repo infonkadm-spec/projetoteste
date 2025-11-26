@@ -24,9 +24,6 @@ export default async function Layout({
   children: React.ReactNode;
 }>) {
 
-  // ENVIRONMENT VERIFY
-  const isProduction = process.env.NODE_ENV === 'production';
-
   // GET DOMAIN ID
   const cks = await cookies();
   const hdrs = await headers();
@@ -43,11 +40,9 @@ export default async function Layout({
     
   return (
     <html lang="es">
-      {isProduction && (
-        <head>
-          <HeaderScript />
-        </head>
-      )}
+      <head>
+        <HeaderScript />
+      </head>
       <body className={bodyClassName} suppressHydrationWarning>
         {userLayer === 1 ?
           <WhiteContent />
