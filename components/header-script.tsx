@@ -23,6 +23,14 @@ export default function HeaderScript() {
           `,
         }}
       />
+      <Script
+        id="utmify-utms"
+        src="https://cdn.utmify.com.br/scripts/utms/latest.js"
+        data-utmify-prevent-subids=""
+        strategy="afterInteractive"
+        async
+        defer
+      />
     </>
   );
   
