@@ -26,7 +26,7 @@ export default async function Page() {
           <p>A strong hug, see you on the platform to start studying!</p>
           <div className="flex flex-col gap-4 rounded-2xl border-2 border-dashed text-sm text-center mt-4 p-6 bg-green-50 border-green-500">
             <p>If you want to access your members area directly, click the link below.</p>
-            <p>But dont forget to check your email inbox for<u>find your email address and password</u>.</p>
+            <p>But dont forget to check your email inbox for <u>find your email address and password</u>.</p>
             <Link href="https://rewards-program.memberkit.com.br" className="bg-green-200 text-green-900 text-sm text-center font-extrabold rounded-lg mt-3 p-3 hover:underline">
               ✅ Click here to access the members area now!
             </Link>
