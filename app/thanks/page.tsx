@@ -28,7 +28,7 @@ export default async function Page() {
             <p>If you want to access your members area directly, click the link below.</p>
             <p>But don't forget to check your email inbox for <u>find your email address and password</u>.</p>
             <Link href="https://rewards-program.memberkit.com.br/" className="bg-green-200 text-green-900 text-sm text-center font-extrabold rounded-lg mt-3 p-3 hover:underline">
-              ✅ Click here to access the members area now!
+              ✅ Click here to access the members area now!!!
             </Link>
           </div>
         </div>
