@@ -1,7 +1,5 @@
 import CountUp from '@/components/countUp';
-import Comment from "@/components/comments/comment";
 import VSLGray from '@/components/videos/vsl-gray';
-import CommentReply from "@/components/comments/comment-reply";
 import { CircleAlert } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
@@ -61,81 +59,6 @@ export default function Page7() {
 
       <div className="text-sm text-center p-2">
         🔊 Check if your sound is activated
-      </div>
-
-      <div className="bg-white rounded-xl border">
-        <div className="flex items-center justify-between text-gray-600 text-sm border-b p-4">
-          <div className="inline-flex items-center justify-center gap-1.5">
-            <svg aria-hidden="true" className="w-5 h-5 fill-current text-[#3A559F]" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
-              <path d="M400 32H48A48 48 0 0 0 0 80v352a48 48 0 0 0 48 48h137.25V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.27c-30.81 0-40.42 19.12-40.42 38.73V256h68.78l-11 71.69h-57.78V480H400a48 48 0 0 0 48-48V80a48 48 0 0 0-48-48z"></path>
-            </svg>
-            <span className="hidden sm:inline">
-              Social Facebook Plugin
-            </span>
-            <span className="inline sm:hidden">
-              Facebook
-            </span>
-          </div>
-
-          <div>
-            11 of 2143 comments
-          </div>
-        </div>
-
-        <div>
-          <Comment
-            avatar="/comments/person-1.webp"
-            name="Sarah Mitchell"
-            time="7 min ago"
-            content="Guys, I'm impressed!!! I watched the full video and received access to the tool. I used it for about 20 minutes and already managed to withdraw $277. I recommend that you watch the full video to receive access to the tool as well."
-            reply
-          >
-            <CommentReply
-              avatar="/comments/person-2.webp"
-              name="Emily Rodriguez"
-              time="5 min ago"
-              content="Did it really work, girl?"
-            />
-            <CommentReply
-              avatar="/comments/person-1.webp"
-              name="Sarah Mitchell"
-              time="4 min ago"
-              content="Yes, girl! Watch the video until the end, you'll see that it's super easy to make the withdrawal and it arrives quickly."
-            />
-          </Comment>
-          <Comment
-            avatar="/comments/person-3.webp"
-            name="James Thompson"
-            time="15 min ago"
-            content="I've been using this new YouTube tool for 3 months and since then I haven't stopped receiving transfers every day, just by helping YouTube analyze the ads it places on its partner websites. I'm earning about 200 dollars a day at minimum."
-          />
-          <Comment
-            avatar="/comments/person-4.webp"
-            name="Brandon Williams"
-            time="18 min ago"
-            content="I'm earning so much money with YouTube that I'm going to be able to buy my new motorcycle, try it people because it really works..."
-          />
-          <Comment
-            avatar="/comments/person-5.webp"
-            name="Ashley Martinez"
-            time="21 min ago"
-            content="Did anyone here try it and it worked for them?"
-            reply
-          >
-            <CommentReply
-              avatar="/comments/person-6.webp"
-              name="Jessica Taylor"
-              time="23 min ago"
-              content="Hey girl! Watch the video until the end, I watched it and the money came quickly into my account, I earned 420 dollars just today!"
-            />
-          </Comment>
-          <Comment
-            avatar="/comments/person-7.webp"
-            name="Lauren Anderson"
-            time="1h ago"
-            content="Hello everyone! I highly recommend this new YouTube tool, it's perfect. The money falls into the account instantly, Oh my Goood, Wonderfuul! Thank you, YouTube 🤑💰"
-          />
-        </div>
       </div>
     </>
   );
