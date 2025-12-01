@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { useState } from "react";
 
 export default function CommentReply({
   avatar,
@@ -12,15 +13,25 @@ export default function CommentReply({
   content: string,
 }) {
 
+  const [imageError, setImageError] = useState(false);
+
   return (
     <div className="flex items-start space-x-3 pl-4 py-1">
-      <Image
-        width={36}
-        height={36}
-        src={avatar}
-        alt={name}
-        className="w-9 h-9 rounded-full"
-      />
+      {!imageError ? (
+        <Image
+          width={36}
+          height={36}
+          src={avatar}
+          alt={name}
+          className="w-9 h-9 rounded-full object-cover"
+          unoptimized
+          onError={() => setImageError(true)}
+        />
+      ) : (
+        <div className="w-9 h-9 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 text-xs font-semibold flex-shrink-0">
+          {name.charAt(0).toUpperCase()}
+        </div>
+      )}
       <div className="flex-1">
         <div className="flex justify-between items-center">
           <h3 className="font-bold text-[#3A559F] text-sm">{name}</h3>
