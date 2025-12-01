@@ -34,24 +34,26 @@ export default function Home() {
 
   return (
     <div className="flex flex-col w-full max-w-xl gap-5 px-4 py-5 pb-10">
-      <div className="flex justify-between items-center">
-        <div className="flex gap-2 items-center">
-          <Image
-            width="50"
-            height="35"
-            src="/youtube.svg"
-            alt={page === 2 ? "Insight Reviews" : "Insight Rewards"}
-            priority
-          />
-          <div className="flex flex-col gap-1">
-            <span className="text-lg font-bold leading-none text-gray-900">Insight</span>
-            <span className="text-xs font-semibold leading-none tracking-wide text-gray-400">
-              {page === 2 ? "Reviews" : "Rewards"}
-            </span>
+      {page !== 1 && (
+        <div className="flex justify-between items-center">
+          <div className="flex gap-2 items-center">
+            <Image
+              width="50"
+              height="35"
+              src="/youtube.svg"
+              alt={page === 2 ? "Insight Reviews" : "Insight Rewards"}
+              priority
+            />
+            <div className="flex flex-col gap-1">
+              <span className="text-lg font-bold leading-none text-gray-900">Insight</span>
+              <span className="text-xs font-semibold leading-none tracking-wide text-gray-400">
+                {page === 2 ? "Reviews" : "Rewards"}
+              </span>
+            </div>
           </div>
+          <Balance page={page} />
         </div>
-        <Balance page={page} />
-      </div>
+      )}
       <PageContent
         page={page}
         setPage={setPage}
