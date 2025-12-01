@@ -35,7 +35,6 @@ export default function Page2({
 
         <div className="flex flex-col gap-1 text-center px-2">
           <span className="text-base font-semibold text-gray-900">Reaction Challenge – Who would you choose?</span>
-          <span className="text-sm text-gray-500">185M views • 1 month ago</span>
         </div>
 
         <div className="flex flex-col gap-2 text-center mt-2">
