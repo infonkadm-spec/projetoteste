@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 export default function Page7() {
 
   const [visible, setVisible] = useState<boolean>(false);
-  const videoId = "6708631ec0f437000cf541d0";
+  const videoId = "692d0c14b62eb74d1b6c85c0";
   const pitchTime = 850;
 
   // VIDEO VERIFY
