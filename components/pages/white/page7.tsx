@@ -40,16 +40,6 @@ export default function Page7() {
         </span>
       </div>
 
-      <div className="bg-[#d92525] rounded-2xl p-8 text-white text-center max-w-[680px] mx-auto">
-        <div className="text-xl font-semibold mb-7">
-          You have already started watching this video
-        </div>
-        <div className="flex flex-col gap-4 mt-7">
-          <div className="text-lg">🔴 Continue watching</div>
-          <div className="text-lg">↪️ Restart from the beginning</div>
-        </div>
-      </div>
-
       <div className="flex items-center flex-col gap-8 relative">
         <VSLGray />
       </div>
