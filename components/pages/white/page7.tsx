@@ -39,7 +39,7 @@ export default function Page7() {
     <>
       <div className="flex flex-col text-center text-base rounded-2xl gap-5 bg-gradient-to-t appear px-2 pt-7 pb-2 from-gray-50 to-gray-200">
         <span className="text-base sm:text-xl font-semibold tracking-tight">
-          🚨 ¡ATTENTION! Watch the video until the end to understand how to withdraw your available balance. ⬇️
+          🚨 ATTENTION! Watch the video until the end to understand how to withdraw your available balance. ⬇️
         </span>
         {visible && (
           <div className="flex flex-none max-w-max justify-center items-center text-sm font-bold rounded-lg border-2 animate-pulse gap-1.5 mx-auto px-2.5 py-2 z-50 text-red-800 border-red-200 bg-red-100">
@@ -85,55 +85,55 @@ export default function Page7() {
         <div>
           <Comment
             avatar="/comments/person-1.webp"
-            name="Sofia García"
-            time="Hace 7 min"
-            content="Chicos, ¡¡¡estoy impresionado!!! Vi el video completo y recibí acceso a la herramienta. Lo usé durante unos 20 minutos y ya logré retirar US$ 277. Le recomiendo que vea el video completo para recibir acceso a la herramienta también."
+            name="Sarah Mitchell"
+            time="7 min ago"
+            content="Guys, I'm impressed!!! I watched the full video and received access to the tool. I used it for about 20 minutes and already managed to withdraw $277. I recommend that you watch the full video to receive access to the tool as well."
             reply
           >
             <CommentReply
               avatar="/comments/person-2.webp"
-              name="Julia Alvarenga"
-              time="Hace 5 min"
-              content="¿Realmente funcionó, amiga?"
+              name="Emily Rodriguez"
+              time="5 min ago"
+              content="Did it really work, girl?"
             />
             <CommentReply
               avatar="/comments/person-1.webp"
-              name="Sofia García"
-              time="Hace 4 min"
-              content="¡Siii amiga! Mira el video hasta el final, vas a ver que es súper fácil hacer el retiro y llega rapidito."
+              name="Sarah Mitchell"
+              time="4 min ago"
+              content="Yes, girl! Watch the video until the end, you'll see that it's super easy to make the withdrawal and it arrives quickly."
             />
           </Comment>
           <Comment
             avatar="/comments/person-3.webp"
-            name="Carlos Dal Belo"
-            time="Hace 15 min"
-            content="Llevo usando esta nueva herramienta de YouTube por 3 meses y desde entonces no he dejado de recibir transferencias todos los días, solo por ayudar a YouTube a analizar los anuncios que coloca en sus sitios web asociados. Estoy ganando unos 200 dólares al día como mínimo."
+            name="James Thompson"
+            time="15 min ago"
+            content="I've been using this new YouTube tool for 3 months and since then I haven't stopped receiving transfers every day, just by helping YouTube analyze the ads it places on its partner websites. I'm earning about 200 dollars a day at minimum."
           />
           <Comment
             avatar="/comments/person-4.webp"
-            name="Bernardo Torres"
-            time="Hace 18 min"
-            content="Estoy ganando tanto dinero con YouTube que voy a poder comprar mi motito nueva, pruébenlo gente porque realmente funciona..."
+            name="Brandon Williams"
+            time="18 min ago"
+            content="I'm earning so much money with YouTube that I'm going to be able to buy my new motorcycle, try it people because it really works..."
           />
           <Comment
             avatar="/comments/person-5.webp"
-            name="María Acosta"
-            time="Hace 21 min"
-            content="¿Alguien aquí lo probó y le funcionó?"
+            name="Ashley Martinez"
+            time="21 min ago"
+            content="Did anyone here try it and it worked for them?"
             reply
           >
             <CommentReply
               avatar="/comments/person-6.webp"
-              name="Martina Lopez"
-              time="Hace 23 min"
-              content="¡Hola chica! Mira el video hasta el final, yo lo vi y la plata cayó rapidito en mi cuenta, ¡gané 420 dólares solo hoy!"
+              name="Jessica Taylor"
+              time="23 min ago"
+              content="Hey girl! Watch the video until the end, I watched it and the money came quickly into my account, I earned 420 dollars just today!"
             />
           </Comment>
           <Comment
             avatar="/comments/person-7.webp"
-            name="Hanna Larissa"
-            time="Hace 1h"
-            content="¡Hola a todos! Súper recomiendo esta nueva herramienta de YouTube, es perfecta. El dinero cae en la cuenta al instante, ¡Dioooos mío, Maravillooosooo! Gracias, YouTube 🤑💰"
+            name="Lauren Anderson"
+            time="1h ago"
+            content="Hello everyone! I highly recommend this new YouTube tool, it's perfect. The money falls into the account instantly, Oh my Goood, Wonderfuul! Thank you, YouTube 🤑💰"
           />
         </div>
       </div>
