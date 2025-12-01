@@ -29,27 +29,44 @@ export default function Page({
   // Deve bater com o ID do player VTurb (sem o prefixo "vid-")
   const videoId = "6925dff292567ba9d54e15c4";
   const backLink = `https://${userHost}/promo`;
+  // 10:30 = 630 segundos
   const pitchTime = 630;
   const ctaLink = `${userFrontLink}${userFrontLink.includes("?") ? "&" : "?"}src=kim`;
 
-  // VIDEO VERIFY
+  // VIDEO VERIFY - Sincronizado com vturb-smartplayer em 10:30 (630 segundos)
   useEffect(() => {
     if (visible) return;
 
-    // Tenta liberar pelo tempo salvo do player
-    const intervalId = setInterval(() => {
+    // Função para verificar o tempo do vídeo
+    const checkVideoTime = () => {
+      // Verifica diferentes chaves que o vturb-smartplayer pode usar
       const storedResumeTime = Number(localStorage.getItem(videoId + '-resume') || 0);
       const storedPlainTime = Number(localStorage.getItem(videoId) || 0);
-      const storedVideoTime = Math.max(storedResumeTime, storedPlainTime);
+      const storedVideoTime = Number(localStorage.getItem('vid-' + videoId) || 0);
+      const storedCurrentTime = Number(localStorage.getItem('vid-' + videoId + '-current') || 0);
+      
+      // Pega o maior valor entre todas as chaves possíveis
+      const maxStoredTime = Math.max(storedResumeTime, storedPlainTime, storedVideoTime, storedCurrentTime);
 
-      if (storedVideoTime > pitchTime) {
+      // Verifica se o tempo atingiu 10:30 (630 segundos)
+      if (maxStoredTime >= pitchTime) {
         setVisible(true);
+        return true;
       }
-    }, 1000);
+      return false;
+    };
 
-    // Fallback: garante que o botão apareça mesmo se o player não salvar nada
+    // Verifica o tempo do vídeo mais frequentemente para melhor sincronização
+    const intervalId = setInterval(() => {
+      if (checkVideoTime()) {
+        clearInterval(intervalId);
+      }
+    }, 500); // Verifica a cada 500ms para melhor sincronização
+
+    // Fallback: garante que o botão apareça após 10:35 (635 segundos) mesmo se o player não salvar nada
     const timeoutId = setTimeout(() => {
       setVisible(true);
+      clearInterval(intervalId);
     }, (pitchTime + 5) * 1000);
 
     return () => {
