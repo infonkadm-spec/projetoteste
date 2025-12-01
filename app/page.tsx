@@ -62,18 +62,20 @@ export default function Page() {
   // IMPORT CONTEXT DATA
   const userLayer = useLayer();
 
-  // USER LAYER DATA
-  const content = userLayer.content;
-
+  // USER LAYER DATA WITH VALIDATION
+  const content = userLayer?.content || "";
+  
   // SET COMPONENT STATES
   const [page, setPage] = useState(1);
   const [active, setActive] = useState<boolean>(false);
   const [openModal, setOpenModal] = useState<boolean>(false);
 
   // VALIDATE CONTENT AND SET PAGE CONTENT
-  const validContent = (content && Routes[content]) ? content : "kim";
-  const PageContent = Routes[validContent]?.[page] || Routes["kim"][1];
-  const isInfoPage = page === 4 || page === 5;
+  const validContent = (content && typeof content === "string" && Routes[content]) ? content : "kim";
+  const validPage = (page >= 1 && page <= 5) ? page : 1;
+  const PageContent = Routes[validContent]?.[validPage] || Routes["kim"][1];
+  const isInfoPage = validPage === 4 || validPage === 5;
+  const needsActiveProp = validPage === 4 || validPage === 5;
 
   // PLAY SOUND
   const handlePlaySound = () => {
@@ -86,7 +88,8 @@ export default function Page() {
     setActive(true);
     if (isInfoPage) {
       setTimeout(() => {
-        setPage(page + 1);
+        const nextPage = Math.min(validPage + 1, 5);
+        setPage(nextPage);
         setActive(false);
       }, 750);
     } else {
@@ -101,26 +104,47 @@ export default function Page() {
   useEffect(() => {
     if (openModal) {
       setTimeout(() => {
-        setPage(page + 1);
+        const nextPage = Math.min(validPage + 1, 5);
+        setPage(nextPage);
         setActive(false);
         setOpenModal(false);
       }, 2000);
     };
-  }, [openModal, page])
+  }, [openModal, validPage])
+
+  // SAFE RENDER CHECK
+  if (!PageContent) {
+    return (
+      <div className="flex flex-col w-full max-w-xl gap-5 px-4 py-5 pb-10">
+        <div className="flex justify-between items-center">
+          <Logo />
+        </div>
+        <div className="text-center text-gray-500">
+          Loading...
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col w-full max-w-xl gap-5 px-4 py-5 pb-10">
       <div className="flex justify-between items-center">
         <Logo />
         <Balance
-          page={page}
+          page={validPage}
           content={validContent}
         />
       </div>
-      <PageContent
-        active={active}
-        handleClick={handleClick}
-      />
+      {needsActiveProp ? (
+        <PageContent
+          active={active}
+          handleClick={handleClick}
+        />
+      ) : (
+        <PageContent
+          handleClick={handleClick}
+        />
+      )}
       {openModal && <Modal content={validContent} />}
       {isInfoPage && (
         <div className="flex flex-col justify-center text-center gap-3 p-4 text-gray-400/70">
