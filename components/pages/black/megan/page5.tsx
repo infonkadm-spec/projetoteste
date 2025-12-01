@@ -29,7 +29,8 @@ export default function Page({
   // Deve bater com o ID do player VTurb (sem o prefixo "vid-")
   const videoId = "6925e0122126a6cf9409a026";
   const backLink = `https://${userHost}/promo`;
-  const pitchTime = 600;
+  // 10:30 = 630 segundos
+  const pitchTime = 630;
   const ctaLink = `${userFrontLink}${userFrontLink.includes("?") ? "&" : "?"}src=megan`;
 
   // VIDEO VERIFY
