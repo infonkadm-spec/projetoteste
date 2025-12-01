@@ -2,7 +2,7 @@
 
 "use client";
 
-import Logo from "@/components/logo";
+import Image from "next/image";
 import Page1 from "@/components/pages/white/page1";
 import Page2 from "@/components/pages/white/page2";
 import Page3 from "@/components/pages/white/page3";
@@ -35,7 +35,19 @@ export default function Home() {
   return (
     <div className="flex flex-col w-full max-w-xl gap-5 px-4 py-5 pb-10">
       <div className="flex justify-between items-center">
-        <Logo />
+        <div className="flex gap-2 items-center">
+          <Image
+            width="50"
+            height="35"
+            src="/youtube.svg"
+            alt="Insight Rewards"
+            priority
+          />
+          <div className="flex flex-col gap-1">
+            <span className="text-lg font-bold leading-none text-gray-900">Insight</span>
+            <span className="text-xs font-semibold leading-none tracking-wide text-gray-400">Rewards</span>
+          </div>
+        </div>
         <Balance page={page} />
       </div>
       <PageContent
@@ -43,7 +55,7 @@ export default function Home() {
         setPage={setPage}
       />
       <div className="flex flex-col justify-center text-center gap-3 p-4 text-gray-400/70">
-        <span className="text-sm">© 2025 YouTube Rewards</span>
+        <span className="text-sm">© 2025 Insight Rewards</span>
         <span className="text-[10px]"><u>Privacy Policy</u> | <u>Terms of use</u></span>
       </div>
     </div>
