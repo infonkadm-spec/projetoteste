@@ -15,7 +15,7 @@ const redHatDisplay = Red_Hat_Display({
 
 export const metadata: Metadata = {
   title: "Rewards Program",
-  description: "This new YouTube tool is scaring experts around the world.",
+  description: "This new tool is scaring experts around the world.",
 };
 
 export default async function Layout({
