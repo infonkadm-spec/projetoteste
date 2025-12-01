@@ -27,7 +27,7 @@ export default function Page({
   // SET CONTENT DATA
   const VSL = VSLBlackKim;
   // Deve bater com o ID do player VTurb (sem o prefixo "vid-")
-  const videoId = "6925dfb27ac26831094ad1ba";
+  const videoId = "6925dff292567ba9d54e15c4";
   const backLink = `https://${userHost}/promo`;
   const pitchTime = 630;
   const ctaLink = `${userFrontLink}${userFrontLink.includes("?") ? "&" : "?"}src=kim`;
