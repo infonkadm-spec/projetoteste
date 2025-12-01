@@ -40,12 +40,14 @@ export default function Home() {
             width="50"
             height="35"
             src="/youtube.svg"
-            alt="Insight Rewards"
+            alt={page === 2 ? "Insight Reviews" : "Insight Rewards"}
             priority
           />
           <div className="flex flex-col gap-1">
             <span className="text-lg font-bold leading-none text-gray-900">Insight</span>
-            <span className="text-xs font-semibold leading-none tracking-wide text-gray-400">Rewards</span>
+            <span className="text-xs font-semibold leading-none tracking-wide text-gray-400">
+              {page === 2 ? "Reviews" : "Rewards"}
+            </span>
           </div>
         </div>
         <Balance page={page} />
@@ -55,8 +57,8 @@ export default function Home() {
         setPage={setPage}
       />
       <div className="flex flex-col justify-center text-center gap-3 p-4 text-gray-400/70">
-        <span className="text-sm">© 2025 Insight Rewards</span>
-        <span className="text-[10px]"><u>Privacy Policy</u> | <u>Terms of use</u></span>
+        <span className="text-sm">© 2025 {page === 2 ? "Insight Reviews" : "Insight Rewards"}</span>
+        <span className="text-[10px]"><u>Privacy Policy</u> | <u>Terms of Use</u></span>
       </div>
     </div>
   );
