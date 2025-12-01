@@ -1,6 +1,5 @@
-import CountUp from '@/components/countUp';
 import VSLGray from '@/components/videos/vsl-gray';
-import { CircleAlert } from 'lucide-react';
+import Button from "@/components/button";
 import { useEffect, useState } from 'react';
 
 export default function Page7() {
@@ -37,28 +36,34 @@ export default function Page7() {
     <>
       <div className="flex flex-col text-center text-base rounded-2xl gap-5 bg-gradient-to-t appear px-2 pt-7 pb-2 from-gray-50 to-gray-200">
         <span className="text-base sm:text-xl font-semibold tracking-tight">
-          🚨 ATTENTION! Watch the video until the end to understand how to withdraw your available balance. ⬇️
+          🎥 ATTENTION! Watch the video until the end to understand the next step. ⬇️
         </span>
-        {visible && (
-          <div className="flex flex-none max-w-max justify-center items-center text-sm font-bold rounded-lg border-2 animate-pulse gap-1.5 mx-auto px-2.5 py-2 z-50 text-red-800 border-red-200 bg-red-100">
-            <CircleAlert size={20} className="flex-none" />
-            <div>
-              <span>ONLY</span>
-              <span className="rounded px-2 py-0.5 mx-1.5 text-white bg-red-500">
-                <CountUp start={100} end={3} duration={150000} />
-              </span>
-              <span>PLACES!</span>
-            </div>
-          </div>
-        )}
       </div>
-      
+
+      <div className="bg-[#d92525] rounded-2xl p-8 text-white text-center max-w-[680px] mx-auto">
+        <div className="text-xl font-semibold mb-7">
+          You have already started watching this video
+        </div>
+        <div className="flex flex-col gap-4 mt-7">
+          <div className="text-lg">🔴 Continue watching</div>
+          <div className="text-lg">↪️ Restart from the beginning</div>
+        </div>
+      </div>
+
       <div className="flex items-center flex-col gap-8 relative">
         <VSLGray />
       </div>
 
-      <div className="text-sm text-center p-2">
-        🔊 Check if your sound is activated
+      {visible && (
+        <div className="flex justify-center mt-4">
+          <Button className="!bg-[#37b569] hover:!bg-[#2d9a56] !text-white !px-8 !py-4 !text-xl !rounded-xl !w-auto max-w-[320px]">
+            Next step
+          </Button>
+        </div>
+      )}
+
+      <div className="text-sm text-center p-2 mt-4">
+        🔊 Make sure your sound is enabled
       </div>
     </>
   );
