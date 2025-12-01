@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import Image from "next/image";
-import Option from "@/components/option";
-import { Frown, Meh, Smile } from "lucide-react";
+import Button from "@/components/button";
+import { Sun, CheckCircle2, Star } from "lucide-react";
 
 export default function Page1({
   page,
@@ -15,54 +14,56 @@ export default function Page1({
   return (
     <>
       <div className="flex flex-col gap-6 text-base appear">
-        <div className="flex flex-col gap-2 text-center mb-2">
-          <span className="text-xl font-bold text-gray-900">User Feedback Session</span>
-        </div>
-        
-        <div className="text-center text-sm text-gray-600 mb-1">
-          <span>🔎 Sample Thumbnail Preview</span>
-        </div>
-
-        <div className="rounded-3xl border shadow-lg p-6 sm:p-7 bg-gray-200 border-gray-400/10 shadow-black/5">
-          <Image
-            width="500"
-            height="367"
-            src="/thumbs/etapa1.webp"
-            alt="Thumbnail"
-            priority
-          />
+        {/* Header Section */}
+        <div className="flex flex-col gap-3 text-center">
+          <div className="flex items-center justify-center gap-2">
+            <Sun size={20} className="text-yellow-500" />
+            <span className="text-2xl font-bold text-gray-900">Welcome to Insight Rewards!</span>
+            <Sun size={20} className="text-yellow-500" />
+          </div>
+          <p className="text-sm text-gray-600 px-2">
+            A platform where you can participate in simple evaluations and accumulate points that can be exchanged for rewards within the system itself.
+          </p>
         </div>
 
-        <div className="flex flex-col gap-2 text-center px-2">
-          <span className="text-base font-semibold text-gray-900">Thumbnail Review – Your Opinion Matters</span>
-          <span className="text-sm text-gray-600">Below is an example of a video thumbnail used for visual testing and feedback purposes.</span>
+        {/* Highlighted Information Box */}
+        <div className="rounded-lg border-2 border-dashed border-green-300 bg-white p-4 shadow-sm">
+          <p className="text-sm text-gray-700 text-center">
+            No prior experience is necessary. Just dedicate a few minutes a day to answer quick analyses and learn how the program works.
+          </p>
         </div>
 
-        <div className="flex flex-col gap-2 text-center mt-2">
-          <span className="text-lg font-semibold">How would you describe your reaction to this thumbnail?</span>
-          <span className="text-gray-600 text-sm">Please select one option below 👇</span>
+        {/* How It Works Section */}
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center justify-center gap-2">
+            <CheckCircle2 size={18} className="text-purple-500" />
+            <h2 className="text-lg font-semibold text-gray-900">How it works</h2>
+          </div>
+          <ul className="flex flex-col gap-2 text-sm text-gray-700 px-4">
+            <li>• You participate in small evaluations</li>
+            <li>• Accumulate points upon completing each step</li>
+            <li>• Afterwards, you can exchange your points for benefits and rewards within the platform.</li>
+          </ul>
+          <p className="text-center text-sm text-gray-600 italic">
+            Simple, direct, and transparent.
+          </p>
         </div>
 
-        <div className="grid grid-cols-3 gap-4">
-          <Option onClick={() => setPage(page + 1)}>
-            <div className="flex flex-col items-center gap-1">
-              <Smile size={45} className="text-green-300" />
-              <span className="text-xs text-gray-600">😊 Positive</span>
-            </div>
-          </Option>
-          <Option onClick={() => setPage(page + 1)}>
-            <div className="flex flex-col items-center gap-1">
-              <Meh size={45} className="text-yellow-500" />
-              <span className="text-xs text-gray-600">😐 Neutral</span>
-            </div>
-          </Option>
-          <Option onClick={() => setPage(page + 1)}>
-            <div className="flex flex-col items-center gap-1">
-              <Frown size={45} className="text-red-500" />
-              <span className="text-xs text-gray-600">☹️ Negative</span>
-            </div>
-          </Option>
+        {/* Call to Action Section */}
+        <div className="flex flex-col gap-2 text-center">
+          <div className="flex items-center justify-center gap-2">
+            <Star size={18} className="text-yellow-500" />
+            <h2 className="text-lg font-semibold text-gray-900">Start by filling out your first evaluations</h2>
+          </div>
+          <p className="text-sm text-gray-600">
+            Complete the next steps and unlock your first points.
+          </p>
         </div>
+
+        {/* Main Action Button */}
+        <Button onClick={() => setPage(page + 1)} className="!bg-green-600 !border-green-700 hover:!bg-green-500">
+          Start now
+        </Button>
       </div>
     </>
   );
