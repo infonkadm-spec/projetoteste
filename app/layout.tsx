@@ -14,7 +14,7 @@ const redHatDisplay = Red_Hat_Display({
 });
 
 export const metadata: Metadata = {
-  title: "YouTube Rewards",
+  title: "Rewards Program",
   description: "This new YouTube tool is scaring experts around the world.",
 };
 
