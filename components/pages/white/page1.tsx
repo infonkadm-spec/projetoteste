@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import Button from "@/components/button";
-import ConfettiEffect from "@/components/confetti";
+import Image from "next/image";
+import Option from "@/components/option";
+import { Frown, Meh, Smile } from "lucide-react";
 
 export default function Page1({
   page,
@@ -13,35 +14,56 @@ export default function Page1({
 
   return (
     <>
-      <div className="flex flex-col text-center text-sm rounded-3xl gap-7 bg-gradient-to-t appear border-t px-8 py-8 from-gray-50 to-gray-200/50 border-gray-300">
-        <div className="flex flex-col gap-4">
-          <span className="text-xl font-semibold">Welcome to Insight Rewards! 🌟</span>
-          <span>A simple platform where you can take part in brief evaluations and explore how our point-based system works.</span>
+      <div className="flex flex-col gap-6 text-base appear">
+        <div className="flex flex-col gap-2 text-center mb-2">
+          <span className="text-xl font-bold text-gray-900">User Feedback Session</span>
         </div>
-        <div className="rounded-lg border-2 border-dashed shadow-lg p-5 bg-green-50 border-green-500">
-          <div className="flex flex-col gap-2">
-            <span className="font-semibold">No experience needed</span>
-            <span className="text-sm">Just take a few minutes each day to complete short activities and become familiar with the program.</span>
-          </div>
+        
+        <div className="text-center text-sm text-gray-600 mb-1">
+          <span>🔎 Sample Thumbnail Preview</span>
         </div>
-        <div className="flex flex-col gap-4 text-left">
-          <span className="text-base font-semibold text-center">How it works</span>
-          <ul className="flex flex-col gap-2 list-none text-sm space-y-1">
-            <li>• You join small evaluations inside the platform</li>
-            <li>• You earn points as you complete each step</li>
-            <li>• Points can be used to access features, benefits, and tools available within the platform</li>
-          </ul>
-          <span className="text-center text-sm font-medium">Clear, simple and easy to follow.</span>
+
+        <div className="rounded-3xl border shadow-lg p-6 sm:p-7 bg-gray-200 border-gray-400/10 shadow-black/5">
+          <Image
+            width="500"
+            height="367"
+            src="/thumbs/etapa1.webp"
+            alt="Thumbnail"
+            priority
+          />
         </div>
-        <div className="flex flex-col gap-4">
-          <span className="text-base font-semibold">⭐ Get started with your first evaluations</span>
-          <span>Complete the next steps to begin exploring the system and unlock your initial points.</span>
+
+        <div className="flex flex-col gap-2 text-center px-2">
+          <span className="text-base font-semibold text-gray-900">Thumbnail Review – Your Opinion Matters</span>
+          <span className="text-sm text-gray-600">Below is an example of a video thumbnail used for visual testing and feedback purposes.</span>
+        </div>
+
+        <div className="flex flex-col gap-2 text-center mt-2">
+          <span className="text-lg font-semibold">How would you describe your reaction to this thumbnail?</span>
+          <span className="text-gray-600 text-sm">Please select one option below 👇</span>
+        </div>
+
+        <div className="grid grid-cols-3 gap-4">
+          <Option onClick={() => setPage(page + 1)}>
+            <div className="flex flex-col items-center gap-1">
+              <Smile size={45} className="text-green-300" />
+              <span className="text-xs text-gray-600">😊 Positive</span>
+            </div>
+          </Option>
+          <Option onClick={() => setPage(page + 1)}>
+            <div className="flex flex-col items-center gap-1">
+              <Meh size={45} className="text-yellow-500" />
+              <span className="text-xs text-gray-600">😐 Neutral</span>
+            </div>
+          </Option>
+          <Option onClick={() => setPage(page + 1)}>
+            <div className="flex flex-col items-center gap-1">
+              <Frown size={45} className="text-red-500" />
+              <span className="text-xs text-gray-600">☹️ Negative</span>
+            </div>
+          </Option>
         </div>
       </div>
-      <Button onClick={() => setPage(page + 1)} className="!bg-green-600 !border-green-700 hover:!bg-green-500">
-        Start now
-      </Button>
-      <ConfettiEffect />
     </>
   );
 
