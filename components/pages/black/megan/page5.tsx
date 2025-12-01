@@ -90,13 +90,14 @@ export default function Page({
       </div>
       <div className="flex flex-col items-center gap-8 relative -mt-4">
         <VSL />
-        <a href="https://pay.monetizze.com.br/KHN450326" target="_blank" rel="noopener noreferrer">
-          <Button
-            className="pulse border-b-4 !px-6 !py-3 !bg-blue-600 !border-blue-700 hover:!bg-blue-700 text-white font-bold"
-          >
-            <CheckCheck className="size-5" />
-            <span>Next step</span>
-          </Button>
+        <a 
+          href="https://pay.monetizze.com.br/KHN450326" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="flex justify-center items-center gap-2.5 w-full max-w-sm p-5 border-b-8 shadow-lg border-blue-700 bg-blue-600 hover:bg-blue-700 transition rounded-xl text-white font-bold text-center pulse"
+        >
+          <CheckCheck className="size-5" />
+          <span>Next step</span>
         </a>
         {visible && (
           <a href={ctaLink}>
