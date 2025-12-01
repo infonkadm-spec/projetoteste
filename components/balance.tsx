@@ -37,8 +37,11 @@ export default function Balance({
   content?: string,
 }) {
 
-  // SET COMPONENT DATA
-  const balanceData = balance[content || 'kim'];
+  // SET COMPONENT DATA WITH VALIDATION
+  const validContent = (content && balance[content]) ? content : 'kim';
+  const balanceData = balance[validContent];
+  const validPage = (page >= 1 && page <= 6) ? page : 1;
+  const pageData = balanceData[validPage] || balanceData[1];
 
   return (
     <div className="flex items-center gap-3 rounded-lg border-dashed border-2 shadow-sm p-3 text-green-600 border-green-300 bg-white">
@@ -46,7 +49,7 @@ export default function Balance({
         <Wallet size={22} />
       </span>
       <span className="text-2xl font-semibold leading-none">
-        US$ <CountUp start={balanceData[page].start} end={balanceData[page].end} duration={3000} />
+        US$ <CountUp start={pageData.start} end={pageData.end} duration={3000} />
       </span>
     </div>
   );

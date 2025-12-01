@@ -14,8 +14,9 @@ export default function Modal({
   content: string,
 }) {
 
-  // SET COMPONENT DATA
-  const valueData = value[content];
+  // SET COMPONENT DATA WITH VALIDATION
+  const validContent = (content && value[content]) ? content : 'kim';
+  const valueData = value[validContent] || 60;
 
   return (
     <div className="flex justify-center items-center fixed inset-0 z-10 backdrop-blur-sm bg-black/40">

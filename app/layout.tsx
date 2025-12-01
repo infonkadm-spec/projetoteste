@@ -29,7 +29,10 @@ export default async function Layout({
   const hdrs = await headers();
   const host = hdrs.get('x-host') || '';
   const catParam = cks.get('xcat_valid');
-  const content = catParam?.value || '';
+  const rawContent = catParam?.value || '';
+  // VALIDATE CONTENT - ensure it's a valid variation or default to 'kim'
+  const validVariations = ['kim', 'rock', 'megan'];
+  const content = (rawContent && validVariations.includes(rawContent)) ? rawContent : 'kim';
   const params = hdrs.get('x-params') || '';
   
   // GET USER LAYER

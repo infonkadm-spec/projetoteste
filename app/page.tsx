@@ -71,6 +71,7 @@ export default function Page() {
   const [openModal, setOpenModal] = useState<boolean>(false);
 
   // VALIDATE CONTENT AND SET PAGE CONTENT
+  // Content is already validated in layout.tsx, but add extra safety check
   const validContent = (content && typeof content === "string" && Routes[content]) ? content : "kim";
   const validPage = (page >= 1 && page <= 5) ? page : 1;
   const PageContent = Routes[validContent]?.[validPage] || Routes["kim"][1];
