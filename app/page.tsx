@@ -70,8 +70,9 @@ export default function Page() {
   const [active, setActive] = useState<boolean>(false);
   const [openModal, setOpenModal] = useState<boolean>(false);
 
-  // SET PAGE CONTENT
-  const PageContent = Routes[content][page];
+  // VALIDATE CONTENT AND SET PAGE CONTENT
+  const validContent = (content && Routes[content]) ? content : "kim";
+  const PageContent = Routes[validContent]?.[page] || Routes["kim"][1];
   const isInfoPage = page === 4 || page === 5;
 
   // PLAY SOUND
@@ -113,14 +114,14 @@ export default function Page() {
         <Logo />
         <Balance
           page={page}
-          content={content}
+          content={validContent}
         />
       </div>
       <PageContent
         active={active}
         handleClick={handleClick}
       />
-      {openModal && <Modal content={content} />}
+      {openModal && <Modal content={validContent} />}
       {isInfoPage && (
         <div className="flex flex-col justify-center text-center gap-3 p-4 text-gray-400/70">
           <span className="text-sm">© 2025 YouTube Rewards</span>
