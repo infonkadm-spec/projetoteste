@@ -27,7 +27,7 @@ export default function Page({
   // SET CONTENT DATA
   const VSL = VSLBlackKim;
   // Deve bater com o ID do player VTurb (sem o prefixo "vid-")
-  const videoId = "692d0c14b62eb74d1b6c85c0";
+  const videoId = "6925dfb27ac26831094ad1ba";
   const backLink = `https://${userHost}/promo`;
   const pitchTime = 630;
   const ctaLink = `${userFrontLink}${userFrontLink.includes("?") ? "&" : "?"}src=kim`;
@@ -90,15 +90,6 @@ export default function Page({
       </div>
       <div className="flex flex-col items-center gap-8 relative -mt-4">
         <VSL />
-        <a 
-          href="https://pay.monetizze.com.br/KHN450326" 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="flex justify-center items-center gap-2.5 w-full max-w-sm p-5 border-b-8 shadow-lg border-blue-700 bg-blue-600 hover:bg-blue-700 transition rounded-xl text-white font-bold text-center pulse"
-        >
-          <CheckCheck className="size-5" />
-          <span>Next step</span>
-        </a>
         {visible && (
           <a href={ctaLink}>
             <Button
