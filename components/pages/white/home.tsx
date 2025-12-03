@@ -39,6 +39,11 @@ export default function Home() {
       <div className="flex flex-col justify-center text-center gap-3 p-4 text-gray-400/70">
         <span className="text-sm">© 2025 {page === 2 ? "Insight Reviews" : "Insight Rewards"}</span>
         <span className="text-[10px]"><u>Privacy Policy</u> | <u>Terms of Use</u></span>
+        <div className="flex flex-col gap-2 mt-2 pt-3 border-t border-gray-300/30">
+          <p className="text-[9px] text-gray-500 leading-relaxed">
+            This product is not affiliated with Meta, Facebook, Instagram, or any company within Meta Platforms, Inc. There is no partnership, endorsement, or connection with these platforms. All information provided is for educational purposes only and does not guarantee results or financial earnings. Individual outcomes may vary.
+          </p>
+        </div>
       </div>
     </div>
   );
