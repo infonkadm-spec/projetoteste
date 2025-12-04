@@ -18,11 +18,39 @@ export default function HotmartUpsell({ black }) {
   }, []);
 
   const initCheckout = () => {
-    if (typeof checkoutElements !== 'undefined') {
-      checkoutElements.init('salesFunnel').mount('#hotmart-sales-funnel');
-    } else {
-      console.error("checkoutElements não está disponível.");
+    // Verificar se o elemento DOM está disponível
+    const element = document.getElementById('hotmart-sales-funnel');
+    if (!element) {
+      console.error("Elemento #hotmart-sales-funnel não encontrado.");
+      return;
     }
+
+    // Aguardar um pouco para garantir que o script está totalmente carregado
+    setTimeout(() => {
+      // @ts-expect-error - checkoutElements is a global variable from Hotmart script
+      if (typeof checkoutElements !== 'undefined') {
+        try {
+          // salesFunnel detecta automaticamente o contexto do funil através de cookies/URL
+          // Tenta primeiro sem parâmetros (comportamento padrão)
+          // @ts-expect-error
+          checkoutElements.init('salesFunnel').mount('#hotmart-sales-funnel');
+        } catch (error) {
+          console.error("Erro ao inicializar checkoutElements:", error);
+          // Se falhar, tenta com parâmetros de configuração
+          try {
+            // @ts-expect-error
+            checkoutElements.init('salesFunnel', {
+              countryIsoCode: 'US',
+              locale: 'en',
+            }).mount('#hotmart-sales-funnel');
+          } catch (retryError) {
+            console.error("Erro ao inicializar checkoutElements com parâmetros:", retryError);
+          }
+        }
+      } else {
+        console.error("checkoutElements não está disponível.");
+      }
+    }, 100);
   };
 
   const upsellClassName = black ? `${upsellClass} ${blackClass}` : upsellClass;
@@ -49,6 +77,10 @@ export default function HotmartUpsell({ black }) {
         src="https://checkout.hotmart.com/lib/hotmart-checkout-elements.js"
         strategy="afterInteractive"
         onLoad={initCheckout}
+        onError={() => {
+          console.error("Erro ao carregar script da Hotmart");
+          setLoading(false);
+        }}
       />
     </div>
   );
