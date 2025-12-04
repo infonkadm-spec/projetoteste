@@ -23,7 +23,7 @@ export default function Page() {
           <div className="font-bold">
             Ok, we&apos;ll give you one more chance, your last chance on this page only!
           </div>
-          <HotmartUpsell black={false} />
+          <HotmartUpsell black={true} />
         </div>
       </div>
     </>  

@@ -4,7 +4,7 @@ import Script from "next/script";
 import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 
-const upsellClass = "flex flex-auto justify-center items-center overflow-hidden -mr-3";
+const upsellClass = "flex flex-auto justify-center items-center overflow-hidden";
 const blackClass = "scale-110 !max-h-48 upsell"
 
 export default function HotmartUpsell({ black }) {
@@ -28,7 +28,7 @@ export default function HotmartUpsell({ black }) {
   const upsellClassName = black ? `${upsellClass} ${blackClass}` : upsellClass;
 
   return (
-    <div className="flex justify-center rounded-xl shadow-lg relative overflow-hidden border-4 border-green-500 bg-[#F7F9FA]">
+    <div className="flex justify-center rounded-2xl shadow-2xl relative overflow-hidden border-4 border-green-500 bg-[#F7F9FA]">
       {black && (
         <>
           <div className="flex top-0 w-full justify-center items-end absolute text-center px-5 pt-5 pb-3 z-50 text-gray-950 bg-[#F7F9FA]">
