@@ -18,6 +18,7 @@ export default function Page({
           alt="Question"
           priority
           quality={60}
+          unoptimized
         />
       </div>
       <div className="flex flex-col gap-2 text-center text-balance my-4">
