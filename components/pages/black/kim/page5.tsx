@@ -3,7 +3,7 @@ import Comments from "@/components/comments";
 import PlacesAlert from '@/components/places-alert';
 import VSLBlackKim from "@/components/videos/vsl-black-kim";
 import { useLayer } from '@/context/layer-provider';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { CheckCheck, Loader2 } from 'lucide-react';
 
 export default function Page({
@@ -16,6 +16,7 @@ export default function Page({
 
   // COMPONENT STATES
   const [visible, setVisible] = useState<boolean>(false);
+  const hasSetVisibleRef = useRef<boolean>(false);
 
   // IMPORT CONTEXT DATA
   const userLayerData = useLayer();
@@ -35,10 +36,15 @@ export default function Page({
 
   // VIDEO VERIFY
   useEffect(() => {
-    if (visible) return;
+    if (hasSetVisibleRef.current) return;
 
     // Tenta liberar pelo tempo salvo do player
     const intervalId = setInterval(() => {
+      if (hasSetVisibleRef.current) {
+        clearInterval(intervalId);
+        return;
+      }
+
       // Verifica chaves padrão (como nas páginas da Megan e Rock)
       const storedResumeTime = Number(localStorage.getItem(videoId + '-resume') || 0);
       const storedPlainTime = Number(localStorage.getItem(videoId) || 0);
@@ -60,20 +66,26 @@ export default function Page({
       );
 
       if (storedVideoTime > pitchTime) {
+        hasSetVisibleRef.current = true;
         setVisible(true);
+        clearInterval(intervalId);
       }
     }, 1000);
 
     // Fallback: garante que o botão apareça mesmo se o player não salvar nada
     const timeoutId = setTimeout(() => {
-      setVisible(true);
+      if (!hasSetVisibleRef.current) {
+        hasSetVisibleRef.current = true;
+        setVisible(true);
+        clearInterval(intervalId);
+      }
     }, (pitchTime + 5) * 1000);
 
     return () => {
       clearInterval(intervalId);
       clearTimeout(timeoutId);
     };
-  }, [videoId, pitchTime, visible]);
+  }, [videoId, pitchTime]);
 
   // BACK REDIRECT
   useEffect(() => {
