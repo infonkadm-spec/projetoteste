@@ -5,9 +5,9 @@ const localTestParam = 'JSvEyAogeImhnLAP';
 
 // PARAM LIST
 const paramList: Record<string, string> = {
-  'k@1230023@$': 'kim',
-  'r@1230023@$': 'rock',
-  'm@1230023@$': 'megan',
+  'kkk@1230023@$1': 'kim',
+  'rrr@1230023@$1': 'rock',
+  'mm@1230023@$1': 'megan',
 };
 
 export function middleware(req: NextRequest) {
