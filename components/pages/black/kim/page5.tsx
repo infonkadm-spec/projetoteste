@@ -26,8 +26,8 @@ export default function Page({
 
   // SET CONTENT DATA
   const VSL = VSLBlackKim;
-  // Deve bater com o ID do player VTurb (sem o prefixo "vid-")
-  const videoId = "6925dff292567ba9d54e15c4";
+  // Deve bater com o ID do player VTurb (sem o prefixo "ab-")
+  const videoId = "69324e13afcc411b3a71e97e";
   const backLink = `https://${userHost}/promo`;
   // 10:30 = 630 segundos
   const pitchTime = 630;
@@ -47,12 +47,13 @@ export default function Page({
       
       // Verifica também chaves do novo player (ab-test)
       const storedAbTestTime = Number(localStorage.getItem('ab-test-' + videoId) || 0);
+      const storedAbTime = Number(localStorage.getItem('ab-' + videoId) || 0);
       const storedPlayerTime = Number(localStorage.getItem('player-' + videoId) || 0);
       
       // Tenta obter o tempo diretamente do elemento do player se disponível
       let playerCurrentTime = 0;
       try {
-        const playerElement = document.getElementById('vid-' + videoId) as HTMLElement & { currentTime?: number };
+        const playerElement = document.getElementById('ab-' + videoId) as HTMLElement & { currentTime?: number };
         if (playerElement && playerElement.currentTime !== undefined) {
           playerCurrentTime = Number(playerElement.currentTime) || 0;
         }
@@ -67,6 +68,7 @@ export default function Page({
         storedVideoTime, 
         storedCurrentTime,
         storedAbTestTime,
+        storedAbTime,
         storedPlayerTime,
         playerCurrentTime
       );
