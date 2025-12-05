@@ -45,11 +45,40 @@ export default function Page({
       const storedVideoTime = Number(localStorage.getItem('vid-' + videoId) || 0);
       const storedCurrentTime = Number(localStorage.getItem('vid-' + videoId + '-current') || 0);
       
-      // Pega o maior valor entre todas as chaves possíveis
-      const maxStoredTime = Math.max(storedResumeTime, storedPlainTime, storedVideoTime, storedCurrentTime);
+      // Verifica também chaves do novo player (ab-test)
+      const storedAbTestTime = Number(localStorage.getItem('ab-test-' + videoId) || 0);
+      const storedPlayerTime = Number(localStorage.getItem('player-' + videoId) || 0);
+      
+      // Tenta obter o tempo diretamente do elemento do player se disponível
+      let playerCurrentTime = 0;
+      try {
+        const playerElement = document.getElementById('vid-' + videoId) as any;
+        if (playerElement && playerElement.currentTime !== undefined) {
+          playerCurrentTime = Number(playerElement.currentTime) || 0;
+        }
+      } catch (e) {
+        // Ignora erros ao acessar o player
+      }
+      
+      // Pega o maior valor entre todas as chaves possíveis e o tempo do player
+      const maxStoredTime = Math.max(
+        storedResumeTime, 
+        storedPlainTime, 
+        storedVideoTime, 
+        storedCurrentTime,
+        storedAbTestTime,
+        storedPlayerTime,
+        playerCurrentTime
+      );
+
+      // Log para debug (pode ser removido em produção)
+      if (maxStoredTime > 0 && maxStoredTime < pitchTime) {
+        console.log(`[Video Sync] Tempo atual: ${Math.floor(maxStoredTime)}s / ${pitchTime}s`);
+      }
 
       // Verifica se o tempo atingiu 10:30 (630 segundos)
       if (maxStoredTime >= pitchTime) {
+        console.log(`[Video Sync] Botão liberado! Tempo: ${Math.floor(maxStoredTime)}s`);
         setVisible(true);
         return true;
       }
@@ -65,6 +94,7 @@ export default function Page({
 
     // Fallback: garante que o botão apareça após 10:35 (635 segundos) mesmo se o player não salvar nada
     const timeoutId = setTimeout(() => {
+      console.log('[Video Sync] Fallback ativado - botão liberado por timeout');
       setVisible(true);
       clearInterval(intervalId);
     }, (pitchTime + 5) * 1000);
