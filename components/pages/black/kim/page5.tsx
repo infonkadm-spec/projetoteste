@@ -28,7 +28,7 @@ export default function Page({
   // SET CONTENT DATA
   const VSL = VSLBlackKim;
   // Deve bater com o ID do player VTurb (sem o prefixo "ab-")
-  const videoId = "69324e13afcc411b3a71e97e";
+  const videoId = "6932600ac5a3364c7812dd29";
   const backLink = `https://${userHost}/promo`;
   // 10:30 = 630 segundos
   const pitchTime = 630;
