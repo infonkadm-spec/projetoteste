@@ -37,48 +37,68 @@ export default function Page({
   useEffect(() => {
     if (visible) return;
 
+    let currentVideoTime = 0;
+
     // Função para verificar o tempo do vídeo
     const checkVideoTime = () => {
-      // Verifica diferentes chaves que o vturb-smartplayer pode usar
-      const storedResumeTime = Number(localStorage.getItem(videoId + '-resume') || 0);
-      const storedPlainTime = Number(localStorage.getItem(videoId) || 0);
-      const storedVideoTime = Number(localStorage.getItem('vid-' + videoId) || 0);
-      const storedCurrentTime = Number(localStorage.getItem('vid-' + videoId + '-current') || 0);
+      // Verifica todas as chaves possíveis do localStorage
+      const keysToCheck = [
+        videoId + '-resume',
+        videoId,
+        'vid-' + videoId,
+        'vid-' + videoId + '-current',
+        'ab-test-' + videoId,
+        'ab-' + videoId,
+        'player-' + videoId,
+        'vturb-' + videoId,
+        'vturb-' + videoId + '-time',
+        'vturb-' + videoId + '-current',
+        'smartplayer-' + videoId,
+        'smartplayer-' + videoId + '-time',
+      ];
+
+      let maxStoredTime = 0;
       
-      // Verifica também chaves do novo player (ab-test)
-      const storedAbTestTime = Number(localStorage.getItem('ab-test-' + videoId) || 0);
-      const storedAbTime = Number(localStorage.getItem('ab-' + videoId) || 0);
-      const storedPlayerTime = Number(localStorage.getItem('player-' + videoId) || 0);
-      
-      // Tenta obter o tempo diretamente do elemento do player se disponível
-      let playerCurrentTime = 0;
+      // Verifica todas as chaves do localStorage
+      keysToCheck.forEach(key => {
+        const value = Number(localStorage.getItem(key) || 0);
+        if (value > maxStoredTime) {
+          maxStoredTime = value;
+        }
+      });
+
+      // Tenta obter o tempo diretamente do elemento do player
       try {
-        const playerElement = document.getElementById('ab-' + videoId) as HTMLElement & { currentTime?: number };
-        if (playerElement && playerElement.currentTime !== undefined) {
-          playerCurrentTime = Number(playerElement.currentTime) || 0;
+        const playerElement = document.getElementById('ab-' + videoId);
+        if (playerElement) {
+          // Tenta acessar propriedades do player
+          const player = playerElement as any;
+          if (player.currentTime !== undefined) {
+            maxStoredTime = Math.max(maxStoredTime, Number(player.currentTime) || 0);
+          }
+          if (player.videoCurrentTime !== undefined) {
+            maxStoredTime = Math.max(maxStoredTime, Number(player.videoCurrentTime) || 0);
+          }
+          if (player.getCurrentTime && typeof player.getCurrentTime === 'function') {
+            try {
+              const time = Number(player.getCurrentTime()) || 0;
+              maxStoredTime = Math.max(maxStoredTime, time);
+            } catch {}
+          }
         }
       } catch {
-        // Ignora erros ao acessar o player
+        // Ignora erros
       }
-      
-      // Pega o maior valor entre todas as chaves possíveis e o tempo do player
-      const maxStoredTime = Math.max(
-        storedResumeTime, 
-        storedPlainTime, 
-        storedVideoTime, 
-        storedCurrentTime,
-        storedAbTestTime,
-        storedAbTime,
-        storedPlayerTime,
-        playerCurrentTime
-      );
 
-      // Log para debug (pode ser removido em produção)
+      // Atualiza o tempo atual
+      currentVideoTime = maxStoredTime;
+
+      // Log para debug
       if (maxStoredTime > 0 && maxStoredTime < pitchTime) {
         console.log(`[Video Sync] Tempo atual: ${Math.floor(maxStoredTime)}s / ${pitchTime}s`);
       }
 
-      // Verifica se o tempo atingiu 10:30 (630 segundos)
+      // Verifica se o tempo atingiu o pitchTime
       if (maxStoredTime >= pitchTime) {
         console.log(`[Video Sync] Botão liberado! Tempo: ${Math.floor(maxStoredTime)}s`);
         setVisible(true);
@@ -87,23 +107,70 @@ export default function Page({
       return false;
     };
 
-    // Verifica o tempo do vídeo mais frequentemente para melhor sincronização
+    // Escuta eventos do player quando disponível
+    const setupPlayerListeners = () => {
+      const playerElement = document.getElementById('ab-' + videoId);
+      if (playerElement) {
+        // Escuta eventos de tempo do vídeo
+        playerElement.addEventListener('timeupdate', () => {
+          checkVideoTime();
+        });
+        
+        playerElement.addEventListener('progress', () => {
+          checkVideoTime();
+        });
+
+        // Escuta eventos customizados do VTurb
+        window.addEventListener('vturb-video-progress', ((e: CustomEvent) => {
+          if (e.detail && e.detail.videoId === videoId && e.detail.currentTime) {
+            currentVideoTime = Number(e.detail.currentTime) || 0;
+            if (currentVideoTime >= pitchTime) {
+              setVisible(true);
+            }
+          }
+        }) as EventListener);
+      }
+    };
+
+    // Verifica o tempo do vídeo periodicamente
     const intervalId = setInterval(() => {
       if (checkVideoTime()) {
         clearInterval(intervalId);
       }
-    }, 500); // Verifica a cada 500ms para melhor sincronização
+    }, 500);
 
-    // Fallback: garante que o botão apareça após 10:35 (635 segundos) mesmo se o player não salvar nada
+    // Listener para mudanças no localStorage (detecta quando o player salva o progresso em outras abas)
+    const storageListener = (e: StorageEvent) => {
+      if (e.key && (e.key.includes(videoId) || e.key.includes('ab-') || e.key.includes('vturb-'))) {
+        checkVideoTime();
+      }
+    };
+    window.addEventListener('storage', storageListener);
+
+    // Tenta configurar listeners após um delay para garantir que o player esteja carregado
+    const setupTimeout = setTimeout(() => {
+      setupPlayerListeners();
+    }, 2000);
+
+    // Fallback: garante que o botão apareça após o tempo necessário (com margem de segurança)
     const timeoutId = setTimeout(() => {
       console.log('[Video Sync] Fallback ativado - botão liberado por timeout');
       setVisible(true);
       clearInterval(intervalId);
-    }, (pitchTime + 5) * 1000);
+    }, (pitchTime + 10) * 1000);
+
+    // Fallback adicional: libera o botão após 11 minutos (660s) caso nenhuma detecção funcione
+    const safetyTimeout = setTimeout(() => {
+      console.log('[Video Sync] Safety fallback ativado - botão liberado');
+      setVisible(true);
+    }, 660 * 1000);
 
     return () => {
       clearInterval(intervalId);
       clearTimeout(timeoutId);
+      clearTimeout(setupTimeout);
+      clearTimeout(safetyTimeout);
+      window.removeEventListener('storage', storageListener);
     };
   }, [videoId, pitchTime, visible]);
 
