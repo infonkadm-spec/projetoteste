@@ -31,7 +31,7 @@ export default function Page({
   const backLink = `https://${userHost}/promo`;
   // 10:30 = 630 segundos
   const pitchTime = 630;
-  const ctaLink = `${userFrontLink}${userFrontLink.includes("?") ? "&" : "?"}src=kim`;
+  const ctaLink = userFrontLink;
 
   // VIDEO VERIFY - Sincronizado com vturb-smartplayer em 10:30 (630 segundos)
   useEffect(() => {

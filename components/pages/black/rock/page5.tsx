@@ -30,7 +30,7 @@ export default function Page({
   const videoId = "6925dfb27ac26831094ad1ba";
   const backLink = `https://${userHost}/promo`;
   const pitchTime = 700;
-  const ctaLink = `${userFrontLink}${userFrontLink.includes("?") ? "&" : "?"}src=rock`;
+  const ctaLink = userFrontLink;
 
   // VIDEO VERIFY
   useEffect(() => {
