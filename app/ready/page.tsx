@@ -21,7 +21,7 @@ export default function Page() {
         </div>
         <div className="flex flex-col text-center text-sm rounded-3xl gap-5 bg-gradient-to-t appear border-t px-5 py-6 -mb-5 from-gray-100 to-white border-gray-300">
           <div className="font-bold">
-          🎉 Congratulations! You won a surprise! 🎁<br></br>
+          🎉 Congratulations! You won a surprise! 🎁<br>
           Click the green button below and receive it immediately!</br>
           </div>
           <HotmartUpsell black={true} />
