@@ -68,6 +68,8 @@ export default function VSLBlackKim() {
           display: "block",
           margin: "0 auto",
           width: "100%",
+          maxWidth: "100%",
+          position: "relative",
         }}
       />
     </>

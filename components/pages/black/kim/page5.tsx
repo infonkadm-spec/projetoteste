@@ -135,8 +135,10 @@ export default function Page({
         </span>
         <PlacesAlert visible={visible} />
       </div>
-      <div className="flex flex-col items-center gap-8 relative -mt-4">
-        <VSL />
+      <div className="flex flex-col items-center gap-8 relative mt-4">
+        <div className="w-full max-w-full">
+          <VSL />
+        </div>
         {visible && (
           <a href={ctaLink}>
             <Button
