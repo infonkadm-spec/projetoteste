@@ -14,7 +14,7 @@ export default function Page({
         <Image
           width="500"
           height="396"
-          src="/thumbs/thumb2.jpg"
+          src="/thumbs/thumb2.webp"
           alt="Question"
           priority
           quality={60}
