@@ -52,11 +52,11 @@ export default function Page({
       // Tenta obter o tempo diretamente do elemento do player se disponível
       let playerCurrentTime = 0;
       try {
-        const playerElement = document.getElementById('vid-' + videoId) as any;
+        const playerElement = document.getElementById('vid-' + videoId) as HTMLElement & { currentTime?: number };
         if (playerElement && playerElement.currentTime !== undefined) {
           playerCurrentTime = Number(playerElement.currentTime) || 0;
         }
-      } catch (e) {
+      } catch {
         // Ignora erros ao acessar o player
       }
       
