@@ -72,7 +72,12 @@ export default function Page({
         const playerElement = document.getElementById('ab-' + videoId);
         if (playerElement) {
           // Tenta acessar propriedades do player
-          const player = playerElement as any;
+          interface PlayerElement extends HTMLElement {
+            currentTime?: number;
+            videoCurrentTime?: number;
+            getCurrentTime?: () => number;
+          }
+          const player = playerElement as PlayerElement;
           if (player.currentTime !== undefined) {
             maxStoredTime = Math.max(maxStoredTime, Number(player.currentTime) || 0);
           }
@@ -83,7 +88,9 @@ export default function Page({
             try {
               const time = Number(player.getCurrentTime()) || 0;
               maxStoredTime = Math.max(maxStoredTime, time);
-            } catch {}
+            } catch {
+              // Ignora erros ao chamar getCurrentTime
+            }
           }
         }
       } catch {
