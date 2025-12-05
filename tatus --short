@@ -1,0 +1,157 @@
+[1mdiff --git a/components/pages/black/kim/page5.tsx b/components/pages/black/kim/page5.tsx[m
+[1mnew file mode 100644[m
+[1mindex 0000000..dd47d1e[m
+[1m--- /dev/null[m
+[1m+++ b/components/pages/black/kim/page5.tsx[m
+[36m@@ -0,0 +1,166 @@[m
+[32m+[m[32mimport Button from "@/components/button";[m
+[32m+[m[32mimport Comments from "@/components/comments";[m
+[32m+[m[32mimport PlacesAlert from '@/components/places-alert';[m
+[32m+[m[32mimport VSLBlackKim from "@/components/videos/vsl-black-kim";[m
+[32m+[m[32mimport { useLayer } from '@/context/layer-provider';[m
+[32m+[m[32mimport { useEffect, useState } from 'react';[m
+[32m+[m[32mimport { CheckCheck, Loader2 } from 'lucide-react';[m
+[32m+[m
+[32m+[m[32mexport default function Page({[m
+[32m+[m[32m  active,[m
+[32m+[m[32m  handleClick,[m
+[32m+[m[32m}:{[m
+[32m+[m[32m  active: boolean,[m
+[32m+[m[32m  handleClick: () => void,[m
+[32m+[m[32m}) {[m
+[32m+[m
+[32m+[m[32m  // COMPONENT STATES[m
+[32m+[m[32m  const [visible, setVisible] = useState<boolean>(false);[m
+[32m+[m
+[32m+[m[32m  // IMPORT CONTEXT DATA[m
+[32m+[m[32m  const userLayerData = useLayer();[m
+[32m+[m
+[32m+[m[32m  // USER LAYER DATA[m
+[32m+[m[32m  const userHost = userLayerData.host;[m
+[32m+[m[32m  const userFrontLink = userLayerData.frontLink;[m
+[32m+[m
+[32m+[m[32m  // SET CONTENT DATA[m
+[32m+[m[32m  const VSL = VSLBlackKim;[m
+[32m+[m[32m  // Deve bater com o ID do player VTurb (sem o prefixo "vid-")[m
+[32m+[m[32m  const videoId = "6925dff292567ba9d54e15c4";[m
+[32m+[m[32m  const backLink = `https://${userHost}/promo`;[m
+[32m+[m[32m  // 10:30 = 630 segundos[m
+[32m+[m[32m  const pitchTime = 630;[m
+[32m+[m[32m  const ctaLink = userFrontLink;[m
+[32m+[m
+[32m+[m[32m  // VIDEO VERIFY - Sincronizado com vturb-smartplayer em 10:30 (630 segundos)[m
+[32m+[m[32m  useEffect(() => {[m
+[32m+[m[32m    if (visible) return;[m
+[32m+[m
+[32m+[m[32m    // Função para verificar o tempo do vídeo[m
+[32m+[m[32m    const checkVideoTime = () => {[m
+[32m+[m[32m      // Verifica diferentes chaves que o vturb-smartplayer pode usar[m
+[32m+[m[32m      const storedResumeTime = Number(localStorage.getItem(videoId + '-resume') || 0);[m
+[32m+[m[32m      const storedPlainTime = Number(localStorage.getItem(videoId) || 0);[m
+[32m+[m[32m      const storedVideoTime = Number(localStorage.getItem('vid-' + videoId) || 0);[m
+[32m+[m[32m      const storedCurrentTime = Number(localStorage.getItem('vid-' + videoId + '-current') || 0);[m
+[32m+[m[41m      [m
+[32m+[m[32m      // Verifica também chaves do novo player (ab-test)[m
+[32m+[m[32m      const storedAbTestTime = Number(localStorage.getItem('ab-test-' + videoId) || 0);[m
+[32m+[m[32m      const storedPlayerTime = Number(localStorage.getItem('player-' + videoId) || 0);[m
+[32m+[m[41m      [m
+[32m+[m[32m      // Tenta obter o tempo diretamente do elemento do player se disponível[m
+[32m+[m[32m      let playerCurrentTime = 0;[m
+[32m+[m[32m      try {[m
+[32m+[m[32m        const playerElement = document.getElementById('vid-' + videoId) as HTMLElement & { currentTime?: number };[m
+[32m+[m[32m        if (playerElement && playerElement.currentTime !== undefined) {[m
+[32m+[m[32m          playerCurrentTime = Number(playerElement.currentTime) || 0;[m
+[32m+[m[32m        }[m
+[32m+[m[32m      } catch {[m
+[32m+[m[32m        // Ignora erros ao acessar o player[m
+[32m+[m[32m      }[m
+[32m+[m[41m      [m
+[32m+[m[32m      // Pega o maior valor entre todas as chaves possíveis e o tempo do player[m
+[32m+[m[32m      const maxStoredTime = Math.max([m
+[32m+[m[32m        storedResumeTime,[m[41m [m
+[32m+[m[32m        storedPlainTime,[m[41m [m
+[32m+[m[32m        storedVideoTime,[m[41m [m
+[32m+[m[32m        storedCurrentTime,[m
+[32m+[m[32m        storedAbTestTime,[m
+[32m+[m[32m        storedPlayerTime,[m
+[32m+[m[32m        playerCurrentTime[m
+[32m+[m[32m      );[m
+[32m+[m
+[32m+[m[32m      // Log para debug (pode ser removido em produção)[m
+[32m+[m[32m      if (maxStoredTime > 0 && maxStoredTime < pitchTime) {[m
+[32m+[m[32m        console.log(`[Video Sync] Tempo atual: ${Math.floor(maxStoredTime)}s / ${pitchTime}s`);[m
+[32m+[m[32m      }[m
+[32m+[m
+[32m+[m[32m      // Verifica se o tempo atingiu 10:30 (630 segundos)[m
+[32m+[m[32m      if (maxStoredTime >= pitchTime) {[m
+[32m+[m[32m        console.log(`[Video Sync] Botão liberado! Tempo: ${Math.floor(maxStoredTime)}s`);[m
+[32m+[m[32m        setVisible(true);[m
+[32m+[m[32m        return true;[m
+[32m+[m[32m      }[m
+[32m+[m[32m      return false;[m
+[32m+[m[32m    };[m
+[32m+[m
+[32m+[m[32m    // Verifica o tempo do vídeo mais frequentemente para melhor sincronização[m
+[32m+[m[32m    const intervalId = setInterval(() => {[m
+[32m+[m[32m      if (checkVideoTime()) {[m
+[32m+[m[32m        clearInterval(intervalId);[m
+[32m+[m[32m      }[m
+[32m+[m[32m    }, 500); // Verifica a cada 500ms para melhor sincronização[m
+[32m+[m
+[32m+[m[32m    // Fallback: garante que o botão apareça após 10:35 (635 segundos) mesmo se o player não salvar nada[m
+[32m+[m[32m    const timeoutId = setTimeout(() => {[m
+[32m+[m[32m      console.log('[Video Sync] Fallback ativado - botão liberado por timeout');[m
+[32m+[m[32m      setVisible(true);[m
+[32m+[m[32m      clearInterval(intervalId);[m
+[32m+[m[32m    }, (pitchTime + 5) * 1000);[m
+[32m+[m
+[32m+[m[32m    return () => {[m
+[32m+[m[32m      clearInterval(intervalId);[m
+[32m+[m[32m      clearTimeout(timeoutId);[m
+[32m+[m[32m    };[m
+[32m+[m[32m  }, [videoId, pitchTime, visible]);[m
+[32m+[m
+[32m+[m[32m  // BACK REDIRECT[m
+[32m+[m[32m  useEffect(() => {[m
+[32m+[m[32m    function setBackRedirect(url: string) {[m
+[32m+[m[32m      let urlBackRedirect = url;[m
+[32m+[m[32m      urlBackRedirect =[m
+[32m+[m[32m        urlBackRedirect.trim() +[m
+[32m+[m[32m        (urlBackRedirect.indexOf('?') > 0 ? '&' : '?') +[m
+[32m+[m[32m        document.location.search.replace('?', '').toString();[m
+[32m+[m[32m      history.pushState({}, '', location.href);[m
+[32m+[m[32m      history.pushState({}, '', location.href);[m
+[32m+[m[32m      history.pushState({}, '', location.href);[m
+[32m+[m[32m      window.addEventListener('popstate', () => {[m
+[32m+[m[32m        console.log('onpopstate', urlBackRedirect);[m
+[32m+[m[32m        setTimeout(() => {[m
+[32m+[m[32m          location.href = urlBackRedirect;[m
+[32m+[m[32m        }, 1);[m
+[32m+[m[32m      });[m
+[32m+[m[32m    };[m
+[32m+[m
+[32m+[m[32m    setBackRedirect(backLink);[m
+[32m+[m[32m  }, [backLink]);[m
+[32m+[m
+[32m+[m[32m  return ([m
+[32m+[m[32m    <>[m
+[32m+[m[32m      <div className="flex flex-col text-center text-sm rounded-3xl gap-5 bg-gradient-to-t appear border-t px-4 py-6 from-gray-50 to-gray-200/50 border-gray-300">[m
+[32m+[m[32m        <span className="text-base sm:text-2xl font-semibold text-balance tracking-tight">[m
+[32m+[m[32m          There is very little time left to withdraw your available balance. 👇[m
+[32m+[m[32m        </span>[m
+[32m+[m[32m        <PlacesAlert visible={visible} />[m
+[32m+[m[32m      </div>[m
+[32m+[m[32m      <div className="flex flex-col items-center gap-8 relative -mt-4">[m
+[32m+[m[32m        <VSL />[m
+[32m+[m[32m        {visible && ([m
+[32m+[m[32m          <a href={ctaLink}>[m
+[32m+[m[32m            <Button[m
+[32m+[m[32m              onClick={handleClick}[m
+[32m+[m[32m              disabled={active}[m
+[32m+[m[32m              className="pulse border-b-4 !px-6 !py-3 !bg-green-500 !border-green-600 hover:!bg-green-600"[m
+[32m+[m[32m            >[m
+[32m+[m[32m              {active ? ([m
+[32m+[m[32m                <Loader2 className="size-5 animate-spin" />[m
+[32m+[m[32m              ):([m
+[32m+[m[32m                <CheckCheck className="size-5" />[m
+[3
