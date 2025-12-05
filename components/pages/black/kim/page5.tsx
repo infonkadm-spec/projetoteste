@@ -131,7 +131,7 @@ export default function Page({
     <>
       <div className="flex flex-col text-center text-sm rounded-3xl gap-5 bg-gradient-to-t appear border-t px-4 py-6 from-gray-50 to-gray-200/50 border-gray-300">
         <span className="text-base sm:text-2xl font-semibold text-balance tracking-tight">
-          There is very little time left to withdraw your available balance. 👇
+          🚨 ATTENTION! Watch the video to the end to understand how to withdraw your available balance. ⬇️
         </span>
         <PlacesAlert visible={visible} />
       </div>
