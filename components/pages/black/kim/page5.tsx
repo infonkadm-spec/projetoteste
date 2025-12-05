@@ -37,66 +37,97 @@ export default function Page({
   useEffect(() => {
     if (visible) return;
 
-    let currentVideoTime = 0;
-    let checkCount = 0;
+    let videoElement: HTMLVideoElement | null = null;
+    let timeUpdateHandler: (() => void) | null = null;
 
-    // Função para verificar o tempo do vídeo
-    const checkVideoTime = () => {
-      checkCount++;
-      let maxStoredTime = 0;
+    // Função para encontrar e monitorar o elemento de vídeo
+    const findAndMonitorVideo = () => {
+      // Tenta encontrar o elemento de vídeo de várias formas
+      const playerElement = document.getElementById('ab-' + videoId);
+      
+      if (playerElement) {
+        // Tenta encontrar o vídeo dentro do player (pode estar em shadow DOM)
+        let video: HTMLVideoElement | null = null;
+        
+        // Tenta no shadowRoot
+        if (playerElement.shadowRoot) {
+          video = playerElement.shadowRoot.querySelector('video');
+        }
+        
+        // Se não encontrou, tenta no próprio elemento ou filhos
+        if (!video) {
+          video = playerElement.querySelector('video');
+        }
+        
+        // Se ainda não encontrou, tenta buscar em todo o documento (último recurso)
+        if (!video) {
+          const allVideos = document.querySelectorAll('video');
+          // Pega o primeiro vídeo que estiver próximo ao player
+          allVideos.forEach(v => {
+            if (playerElement.contains(v) || v.closest('vturb-smartplayer') === playerElement) {
+              video = v;
+            }
+          });
+        }
 
-      // Verifica todas as chaves possíveis do localStorage (incluindo variações do teste A/B)
-      const keysToCheck = [
-        // Chaves padrão
+        if (video && !videoElement) {
+          videoElement = video;
+          console.log('[Video Sync] ✅ Vídeo encontrado! Iniciando monitoramento...');
+          
+          // Remove handler anterior se existir
+          if (timeUpdateHandler) {
+            video.removeEventListener('timeupdate', timeUpdateHandler);
+          }
+          
+          // Cria novo handler
+          timeUpdateHandler = () => {
+            const currentTime = videoElement?.currentTime || 0;
+            
+            if (currentTime >= pitchTime) {
+              console.log(`[Video Sync] ✅ Botão liberado! Tempo: ${Math.floor(currentTime)}s`);
+              setVisible(true);
+              if (videoElement && timeUpdateHandler) {
+                videoElement.removeEventListener('timeupdate', timeUpdateHandler);
+              }
+            } else if (Math.floor(currentTime) % 30 === 0 && currentTime > 0) {
+              // Log a cada 30 segundos
+              console.log(`[Video Sync] Tempo: ${Math.floor(currentTime)}s / ${pitchTime}s`);
+            }
+          };
+          
+          video.addEventListener('timeupdate', timeUpdateHandler);
+        }
+      }
+    };
+
+    // Verifica localStorage como fallback
+    const checkLocalStorage = () => {
+      // Chaves mais prováveis para teste A/B
+      const keys = [
         videoId + '-resume',
         videoId,
-        'vid-' + videoId,
-        'vid-' + videoId + '-current',
-        // Chaves específicas do teste A/B
-        'ab-test-' + videoId,
-        'ab-test-' + videoId + '-time',
-        'ab-test-' + videoId + '-current',
         'ab-' + videoId,
-        'ab-' + videoId + '-time',
-        'ab-' + videoId + '-current',
         'ab-' + videoId + '-resume',
-        // Chaves do player
-        'player-' + videoId,
-        'player-' + videoId + '-time',
-        // Chaves VTurb
-        'vturb-' + videoId,
-        'vturb-' + videoId + '-time',
-        'vturb-' + videoId + '-current',
-        'vturb-' + videoId + '-resume',
-        // Chaves smartplayer
-        'smartplayer-' + videoId,
-        'smartplayer-' + videoId + '-time',
-        // Chaves com ID completo incluindo prefixo
-        'ab-69324e13afcc411b3a71e97e',
-        'ab-69324e13afcc411b3a71e97e-time',
-        'ab-69324e13afcc411b3a71e97e-current',
+        'ab-test-' + videoId,
+        'ab-test-' + videoId + '-resume',
       ];
 
-      // Verifica todas as chaves do localStorage
-      keysToCheck.forEach(key => {
-        try {
-          const value = Number(localStorage.getItem(key) || 0);
-          if (value > maxStoredTime) {
-            maxStoredTime = value;
-          }
-        } catch {
-          // Ignora erros
+      let maxTime = 0;
+      keys.forEach(key => {
+        const value = Number(localStorage.getItem(key) || 0);
+        if (value > maxTime) {
+          maxTime = value;
         }
       });
 
-      // Verifica também todas as chaves do localStorage que contenham o videoId
+      // Verifica todas as chaves que contenham o videoId
       try {
         for (let i = 0; i < localStorage.length; i++) {
           const key = localStorage.key(i);
-          if (key && (key.includes(videoId) || key.includes('69324e13afcc411b3a71e97e'))) {
+          if (key && key.includes(videoId)) {
             const value = Number(localStorage.getItem(key) || 0);
-            if (value > maxStoredTime) {
-              maxStoredTime = value;
+            if (value > maxTime) {
+              maxTime = value;
             }
           }
         }
@@ -104,163 +135,60 @@ export default function Page({
         // Ignora erros
       }
 
-      // Tenta obter o tempo diretamente do elemento do player
-      try {
-        const playerElement = document.getElementById('ab-' + videoId);
-        if (playerElement) {
-          interface PlayerElement extends HTMLElement {
-            currentTime?: number;
-            videoCurrentTime?: number;
-            getCurrentTime?: () => number;
-            _currentTime?: number;
-            video?: {
-              currentTime?: number;
-            };
-          }
-          const player = playerElement as PlayerElement;
-          
-          // Tenta diferentes formas de acessar o tempo
-          if (player.currentTime !== undefined) {
-            maxStoredTime = Math.max(maxStoredTime, Number(player.currentTime) || 0);
-          }
-          if (player.videoCurrentTime !== undefined) {
-            maxStoredTime = Math.max(maxStoredTime, Number(player.videoCurrentTime) || 0);
-          }
-          if (player._currentTime !== undefined) {
-            maxStoredTime = Math.max(maxStoredTime, Number(player._currentTime) || 0);
-          }
-          if (player.video?.currentTime !== undefined) {
-            maxStoredTime = Math.max(maxStoredTime, Number(player.video.currentTime) || 0);
-          }
-          if (player.getCurrentTime && typeof player.getCurrentTime === 'function') {
-            try {
-              const time = Number(player.getCurrentTime()) || 0;
-              maxStoredTime = Math.max(maxStoredTime, time);
-            } catch {
-              // Ignora erros
-            }
-          }
-
-          // Tenta acessar através do shadow DOM se existir
-          if (player.shadowRoot) {
-            const video = player.shadowRoot.querySelector('video');
-            if (video && video.currentTime) {
-              maxStoredTime = Math.max(maxStoredTime, Number(video.currentTime) || 0);
-            }
-          }
-        }
-      } catch {
-        // Ignora erros
-      }
-
-      // Atualiza o tempo atual
-      currentVideoTime = maxStoredTime;
-
-      // Log para debug (a cada 10 verificações para não poluir o console)
-      if (checkCount % 10 === 0 && maxStoredTime > 0 && maxStoredTime < pitchTime) {
-        console.log(`[Video Sync] Tempo atual: ${Math.floor(maxStoredTime)}s / ${pitchTime}s (${Math.floor((maxStoredTime / pitchTime) * 100)}%)`);
-      }
-
-      // Verifica se o tempo atingiu 10:30 (630 segundos)
-      if (maxStoredTime >= pitchTime) {
-        console.log(`[Video Sync] ✅ Botão liberado! Tempo: ${Math.floor(maxStoredTime)}s (${Math.floor(maxStoredTime / 60)}:${String(Math.floor(maxStoredTime % 60)).padStart(2, '0')})`);
+      if (maxTime >= pitchTime) {
+        console.log(`[Video Sync] ✅ Botão liberado via localStorage! Tempo: ${Math.floor(maxTime)}s`);
         setVisible(true);
         return true;
       }
       return false;
     };
 
-    // Escuta eventos do player quando disponível
-    const setupPlayerListeners = () => {
-      const playerElement = document.getElementById('ab-' + videoId);
-      if (playerElement) {
-        console.log('[Video Sync] Player encontrado, configurando listeners...');
-        
-        // Escuta eventos de tempo do vídeo
-        playerElement.addEventListener('timeupdate', () => {
-          checkVideoTime();
-        });
-        
-        playerElement.addEventListener('progress', () => {
-          checkVideoTime();
-        });
-
-        playerElement.addEventListener('loadedmetadata', () => {
-          checkVideoTime();
-        });
-
-        // Escuta eventos customizados do VTurb
-        const customEventListener = ((e: CustomEvent) => {
-          if (e.detail) {
-            const detail = e.detail as { videoId?: string; currentTime?: number; time?: number };
-            if ((detail.videoId === videoId || detail.videoId === 'ab-' + videoId) && (detail.currentTime || detail.time)) {
-              currentVideoTime = Number(detail.currentTime || detail.time) || 0;
-              if (currentVideoTime >= pitchTime) {
-                setVisible(true);
-              } else {
-                checkVideoTime();
-              }
-            }
-          }
-        }) as EventListener;
-
-        window.addEventListener('vturb-video-progress', customEventListener);
-        window.addEventListener('video-progress', customEventListener);
-        window.addEventListener('player-progress', customEventListener);
-      } else {
-        console.log('[Video Sync] Player não encontrado ainda, tentando novamente...');
+    // Tenta encontrar o vídeo periodicamente
+    const findVideoInterval = setInterval(() => {
+      if (!videoElement) {
+        findAndMonitorVideo();
       }
-    };
-
-    // Verifica o tempo do vídeo periodicamente (a cada 300ms para melhor responsividade)
-    const intervalId = setInterval(() => {
-      if (checkVideoTime()) {
-        clearInterval(intervalId);
-      }
-    }, 300);
-
-    // Listener para mudanças no localStorage
-    const storageListener = (e: StorageEvent) => {
-      if (e.key && (e.key.includes(videoId) || e.key.includes('ab-') || e.key.includes('vturb-') || e.key.includes('69324e13afcc411b3a71e97e'))) {
-        checkVideoTime();
-      }
-    };
-    window.addEventListener('storage', storageListener);
-
-    // Tenta configurar listeners várias vezes para garantir que o player esteja carregado
-    const setupTimeout1 = setTimeout(() => {
-      setupPlayerListeners();
     }, 1000);
-    
-    const setupTimeout2 = setTimeout(() => {
-      setupPlayerListeners();
-    }, 3000);
-    
-    const setupTimeout3 = setTimeout(() => {
-      setupPlayerListeners();
-    }, 5000);
 
-    // Fallback principal: garante que o botão apareça exatamente em 10:30 (630 segundos)
+    // Verifica localStorage periodicamente como backup
+    const localStorageInterval = setInterval(() => {
+      if (checkLocalStorage()) {
+        clearInterval(localStorageInterval);
+      }
+    }, 2000);
+
+    // MutationObserver para detectar quando o player é adicionado ao DOM
+    const observer = new MutationObserver(() => {
+      if (!videoElement) {
+        findAndMonitorVideo();
+      }
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
+
+    // Tenta encontrar imediatamente
+    findAndMonitorVideo();
+
+    // Fallback principal: garante que o botão apareça em 10:30 (630 segundos)
     const timeoutId = setTimeout(() => {
       console.log('[Video Sync] ⏰ Fallback ativado - botão liberado após 10:30');
       setVisible(true);
-      clearInterval(intervalId);
+      clearInterval(findVideoInterval);
+      clearInterval(localStorageInterval);
+      observer.disconnect();
     }, pitchTime * 1000);
 
-    // Fallback de segurança: libera o botão após 10:35 (635s) caso nenhuma detecção funcione
-    const safetyTimeout = setTimeout(() => {
-      console.log('[Video Sync] 🛡️ Safety fallback ativado - botão liberado após 10:35');
-      setVisible(true);
-    }, 635 * 1000);
-
     return () => {
-      clearInterval(intervalId);
+      clearInterval(findVideoInterval);
+      clearInterval(localStorageInterval);
       clearTimeout(timeoutId);
-      clearTimeout(setupTimeout1);
-      clearTimeout(setupTimeout2);
-      clearTimeout(setupTimeout3);
-      clearTimeout(safetyTimeout);
-      window.removeEventListener('storage', storageListener);
+      observer.disconnect();
+      if (videoElement && timeUpdateHandler) {
+        videoElement.removeEventListener('timeupdate', timeUpdateHandler);
+      }
     };
   }, [videoId, pitchTime, visible]);
 
