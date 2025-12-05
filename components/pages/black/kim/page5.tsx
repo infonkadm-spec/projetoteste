@@ -134,27 +134,25 @@ export default function Page({
           There is very little time left to withdraw your available balance. 👇
         </span>
         <PlacesAlert visible={visible} />
-        <div className="flex flex-col items-center gap-8 relative mt-4">
-          <div className="w-full max-w-full">
-            <VSL />
-          </div>
-          {visible && (
-            <a href={ctaLink}>
-              <Button
-                onClick={handleClick}
-                disabled={active}
-                className="pulse border-b-4 !px-6 !py-3 !bg-green-500 !border-green-600 hover:!bg-green-600"
-              >
-                {active ? (
-                  <Loader2 className="size-5 animate-spin" />
-                ):(
-                  <CheckCheck className="size-5" />
-                )}
-                <span>I WANT TO PAY THE FEE!</span>
-              </Button>
-            </a>
-          )}
-        </div>
+      </div>
+      <div className="flex flex-col items-center gap-8 relative -mt-4">
+        <VSL />
+        {visible && (
+          <a href={ctaLink}>
+            <Button
+              onClick={handleClick}
+              disabled={active}
+              className="pulse border-b-4 !px-6 !py-3 !bg-green-500 !border-green-600 hover:!bg-green-600"
+            >
+              {active ? (
+                <Loader2 className="size-5 animate-spin" />
+              ):(
+                <CheckCheck className="size-5" />
+              )}
+              <span>I WANT TO PAY THE FEE!</span>
+            </Button>
+          </a>
+        )}
       </div>
       {!visible && (
         <div className="text-sm text-center p-2">
