@@ -20,8 +20,13 @@ export default function Page() {
           <Progress progress={96} />
         </div>
         <div className="flex flex-col text-center text-sm rounded-3xl gap-5 bg-gradient-to-t appear border-t px-5 py-6 -mb-5 from-gray-100 to-white border-gray-300">
-          <div className="font-bold">
-            Ok, we&apos;ll give you one more chance, your last chance on this page only!
+          <div className="flex flex-col gap-3">
+            <div className="font-bold">
+              🎉 Congratulations! You won a surprise! 🎁
+            </div>
+            <div>
+              Click the green button below and receive it immediately!
+            </div>
           </div>
           <HotmartUpsell black={true} />
         </div>
